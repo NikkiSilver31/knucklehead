@@ -4,11 +4,66 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/pointing.h>
 #include "../knucklehead/base.dtsi"
 
-/ {
-  chosen {
-    zmk,matrix_transform = &default_transform;
-  };
+&mmv {
 };
 
+&msc {
+};
+
+/ {
+    chosen { zmk,matrix_transform = &default_transform; };
+
+    behaviors {
+        new_behavior: new_behavior {
+            compatible = "zmk,behavior-mouse-key-press";
+            label = "NEW_BEHAVIOR";
+            #binding-cells = <1>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        layer_0 {
+            bindings = <
+&msc SCRL_LEFT  &kp Q  &kp W  &kp E                 &kp R   &kp T        &kp Y      &kp U                   &kp I      &kp O    &kp P         &to 1
+&mmv MOVE_UP    &kp A  &kp S  &kp D                 &kp F   &kp G        &kp H      &kp J                   &kp K      &kp L    &kp SEMI      &kp APOS
+&mmv MOVE_DOWN  &kp Z  &kp X  &kp C                 &kp V   &kp B        &kp N      &kp M                   &kp COMMA  &kp DOT  &kp QUESTION  &kp RG(SPACE)
+                              &mt (LEFT_GUI) RG(Q)  &trans  &kp ENTER    &kp SPACE  &mt RG(BSPC) BACKSPACE  &to 1
+            >;
+        };
+
+        layer_1 {
+            bindings = <
+&kp GRAVE          &kp EXCLAMATION  &kp AT_SIGN  &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET             &kp AMPERSAND     &kp ASTERISK       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &trans
+&ext_power EP_ON   &kp N1           &kp N2       &kp N3    &kp N4      &kp N5         &kp N6                &kp N7            &kp N8             &kp N0                &kp COLON              &kp DOUBLE_QUOTES
+&ext_power EP_OFF  &trans           &trans       &trans    &trans      &trans         &kp NON_US_BACKSLASH  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &trans                &ext_power EP_OFF      &ext_power EP_ON
+                                                 &trans    &kp EQUAL   &kp PLUS       &kp UNDER             &kp MINUS         &to 0
+            >;
+        };
+
+        layer_2 {
+            bindings = <
+&kp TAB      &trans      &kp INSERT          &kp UP_ARROW        &kp K_CUT        &kp PG_UP         &trans          &kp RG(T)        &kp RG(W)  &kp RG(N)  &trans            &trans
+&kp K_PASTE  &kp K_COPY  &kp LEFT            &kp DOWN            &kp RIGHT_ARROW  &kp PAGE_DOWN     &trans          &mkp LCLK        &mkp RCLK  &mkp MCLK  &kp C_AC_REFRESH  &trans
+&trans       &trans      &kp C_AL_PREV_TASK  &kp C_AL_NEXT_TASK  &msc SCRL_RIGHT  &msc SCRL_LEFT    &mmv MOVE_LEFT  &mmv MOVE_RIGHT  &trans     &trans     &trans            &trans
+                                             &to 3               &msc SCRL_DOWN   &msc SCRL_UP      &mmv MOVE_UP    &mmv MOVE_DOWN   &to 0
+            >;
+        };
+
+        layer_3 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans    &kp K_SLEEP       &kp K_SCREENSAVER     &kp C_AC_SCROLL_DOWN  &trans      &trans          &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &kp K_MUTE        &kp C_VOLUME_DOWN     &kp C_VOLUME_UP       &kp K_NEXT  &kp C_AL_MUSIC  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &kp C_SLEEP_MODE  &kp C_BRIGHTNESS_DEC  &kp C_BRI_UP          &trans      &trans          &trans
+                        &trans  &trans  &trans    &kp K_PLAY_PAUSE  &kp K_PREVIOUS        &to 0
+            >;
+        };
+    };
+};
